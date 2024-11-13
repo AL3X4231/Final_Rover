@@ -19,10 +19,10 @@ typedef struct t_tree {
 }t_tree;
 
 
-t_node * create_node(int value);
+t_node * createNode(int value,int nb_sons);
 
-void createSons(int height, int moves[]);
-
+void createSons(t_node* node, int height, int moves[]);
+void displayTree(t_node* node, int level);
 t_tree create_tree(t_node * root);
 
 #endif //NODE_H

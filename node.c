@@ -19,10 +19,10 @@ void createSons(t_node* node, int height, int moves[]) {
         return;
     } else {
         for (int i=0; i < height; i++) {
-            node->sons[i] = createNode(moves[i], sizeof(moves));
+            node->sons[i] = createNode(2,height);
 
-            int new_tab[sizeof(moves)-1];
-            for (int j=0; j < sizeof(moves)-1; j++) {
+            int new_tab[height-1];
+            for (int j=0; j < height-1; j++) {
                 bool test = true;
                 if (i==j) {
                     test = false;
@@ -33,12 +33,27 @@ void createSons(t_node* node, int height, int moves[]) {
                     new_tab[j] = moves[i+1];
                 }
             }
-            createSons(height-1, new_tab);
+            createSons(node->sons[i],height-1, new_tab);
         }
     }
 
 }
+void displayTree(t_node* node, int level) {
+    if (node == NULL) {
+        return;
+    }
 
+    // Affiche le nœud actuel avec une indentation selon son niveau
+    for (int i = 0; i < level; i++) {
+        printf("  ");  // Indentation pour chaque niveau
+    }
+    printf("Node value: %d, Number of sons: %d\n", node->value, node->nb_sons);
+
+    // Parcours récursif des fils du nœud actuel
+    for (int i = 0; i < node->nb_sons; i++) {
+        displayTree(node->sons[i], level + 1);
+    }
+}
 
 /*
 void displayTree(t_tree t) {
