@@ -20,7 +20,7 @@ void createSons(t_node* node, int height, int moves[]) {
     } else {
         for (int i=0; i < height; i++) {
             node->sons[i] = createNode(moves[i], sizeof(moves));
-            
+
             int new_tab[sizeof(moves)-1];
             for (int j=0; j < sizeof(moves)-1; j++) {
                 bool test = true;
