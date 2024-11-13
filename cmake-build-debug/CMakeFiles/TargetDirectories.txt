@@ -1,3 +1,0 @@
-C:/Python/Projet python chat bot/C-project/C-project/Final_Rover/cmake-build-debug/CMakeFiles/untitled1.dir
-C:/Python/Projet python chat bot/C-project/C-project/Final_Rover/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Python/Projet python chat bot/C-project/C-project/Final_Rover/cmake-build-debug/CMakeFiles/rebuild_cache.dir
