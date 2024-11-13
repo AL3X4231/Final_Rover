@@ -14,12 +14,13 @@ t_node * createNode(int value, int nb_sons) {
     return node;
 }
 
-void createSons(int height, int moves[]) {
+void createSons(t_node* node, int height, int moves[]) {
     if (height == 0) {
         return;
     } else {
         for (int i=0; i < height; i++) {
-            createNode(moves[i], sizeof(moves));
+            node->sons[i] = createNode(moves[i], sizeof(moves));
+            
             int new_tab[sizeof(moves)-1];
             for (int j=0; j < sizeof(moves)-1; j++) {
                 bool test = true;
