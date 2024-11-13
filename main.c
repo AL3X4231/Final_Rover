@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "map.h"
+#include "node.h"
 
 int main() {
     t_map map;
@@ -32,5 +33,10 @@ int main() {
         printf("\n");
     }
     displayMap(map);
+
+
+    printf("\n TEST\n");
+    int moves[3] = {1, 2, 3};
+    createSons(3, moves);
     return 0;
 }

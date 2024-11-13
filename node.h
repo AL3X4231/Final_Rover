@@ -21,6 +21,8 @@ typedef struct t_tree {
 
 t_node * create_node(int value);
 
+void createSons(int height, int moves[]);
+
 t_tree create_tree(t_node * root);
 
 #endif //NODE_H

@@ -23,18 +23,23 @@ void createSons(int height, int moves[]) {
             int new_tab[sizeof(moves)-1];
             for (int j=0; j < sizeof(moves)-1; j++) {
                 bool test = true;
+                if (i==j) {
+                    test = false;
+                }
                 if (test){
                     new_tab[j] = moves[j];
                 } else {
                     new_tab[j] = moves[i+1];
+                }
             }
-            createSons(height-1, moves[i]);
+            createSons(height-1, new_tab);
+        }
     }
 
 }
 
 
-
+/*
 void displayTree(t_tree t) {
     if (t.root != NULL) {
         printf("");
@@ -46,10 +51,5 @@ void displayTree(t_tree t) {
             displayTree(tNew);
         }
     }
+}*/
 
-
-}
-
-t_tree createBigTree(int possibilities) {
-
-}
