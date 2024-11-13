@@ -9,7 +9,8 @@
 
 typedef struct t_node {
     int value ;
-    struct t_node * tab[3];
+    int nb_sons;
+    struct t_node * sons[9];
 
 }t_node;
 
