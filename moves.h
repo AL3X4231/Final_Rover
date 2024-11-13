@@ -49,5 +49,7 @@ t_localisation move(t_localisation, t_move);
  * @return none
  */
 void updateLocalisation(t_localisation *, t_move);
+t_move* chooseMove(int nbmove);
+
 
 #endif //UNTITLED1_MOVES_H
