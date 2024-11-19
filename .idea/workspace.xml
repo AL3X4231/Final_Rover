@@ -24,9 +24,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fff7ac75-c458-4b56-95f6-2fe0d98d0da0" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/moves.c" beforeDir="false" afterPath="$PROJECT_DIR$/moves.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/moves.h" beforeDir="false" afterPath="$PROJECT_DIR$/moves.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node.c" beforeDir="false" afterPath="$PROJECT_DIR$/node.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node.h" beforeDir="false" afterPath="$PROJECT_DIR$/node.h" afterDir="false" />
     </list>
@@ -92,6 +94,8 @@
       <updated>1731492428438</updated>
       <workItem from="1731492429828" duration="61000" />
       <workItem from="1731492507811" duration="5836000" />
+      <workItem from="1732009625146" duration="8434000" />
+      <workItem from="1732024756010" duration="4613000" />
     </task>
     <servers />
   </component>

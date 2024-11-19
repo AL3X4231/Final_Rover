@@ -231,5 +231,19 @@ t_move* chooseMove(int nbmove) {
     return list;
 }
 
+const char* t_move_to_string(t_move move) {
+    switch (move) {
+        case F_10:    return "Forward 10 m";
+        case F_20:    return "Forward 20 m";
+        case F_30:    return "Forward 30 m";
+        case B_10:    return "Backward 10 m";
+        case T_LEFT:  return "Turn left (+90°)";
+        case T_RIGHT: return "Turn right (-90°)";
+        case U_TURN:  return "U-Turn (180°)";
+        case STAY:  return "Stay at base";
+        default:      return "Unknown move";
+    }
+}
+
 
 

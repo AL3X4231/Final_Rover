@@ -4,25 +4,24 @@
 
 #ifndef NODE_H
 #define NODE_H
-
+#include "moves.h"
+#include "map.h"
 
 
 typedef struct t_node {
     int value ;
     int nb_sons;
+    t_soil soil;
+    t_move move;
     struct t_node * sons[9];
 
 }t_node;
 
-typedef struct t_tree {
-    t_node * root;
-}t_tree;
 
+t_node * createNode(int value,int nb_sons, t_move move);
 
-t_node * createNode(int value,int nb_sons);
-
-void createSons(t_node* node, int height, int moves[]);
+void createSons(t_node* node, int height, int nb_choices,t_move moves[]);
 void displayTree(t_node* node, int level);
-t_tree create_tree(t_node * root);
+
 
 #endif //NODE_H

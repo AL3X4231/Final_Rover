@@ -24,8 +24,11 @@ typedef enum e_move
     B_10, // Backward 10 m
     T_LEFT, // Turn left (+90°)
     T_RIGHT, // Turn right (-90°)
-    U_TURN
+    U_TURN,
+    STAY // initialize the robot on the root of the tree
 } t_move;
+
+const char* t_move_to_string(t_move move);
 
 /**
  * @brief function to get a t_move as a string
