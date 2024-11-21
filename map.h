@@ -56,5 +56,6 @@ t_localisation defineRobotPosition(t_map map);
  * @param map : the map to display
  */
 void displayMap(t_map);
+void displayMapRobot(t_map , t_position );
 
 #endif //UNTITLED1_MAP_H

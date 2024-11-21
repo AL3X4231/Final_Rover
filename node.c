@@ -27,14 +27,16 @@ void createSons(t_node* node, int nb_moves, int nb_choices, t_move moves[], t_lo
             t_localisation newLoc = move(loc, moves[i]); //focntion de newloc
 
             //test si le robot est toujours sur la carte
+            //printf("\nx_max at y max : %d %d", map.x_max, map.y_max);
+            //printf("\nposition du bot : %d %d", newLoc.pos.x, newLoc.pos.y);
             if(isValidPosition(newLoc, map.x_max,  map.y_max)){
+                //printf("valid");
                 cost = map.costs[newLoc.pos.x][newLoc.pos.y];
+            } else {
+                //printf("\nThe robot jumps  of the map !?!\n");
+                cost = 10000;
             }
-            else {
-                printf("The robot jumps  of the map !?!");
-                cost = 1000;
-            }
-            node->sons[i] = createNode(0,nb_moves-1, moves[i], newLoc); ///rajouter soil
+            node->sons[i] = createNode(cost,nb_moves-1, moves[i], newLoc); ///rajouter soil
 
             t_move new_tab[nb_moves-1];
             // Construire un tableau sans le mouvement actuel
@@ -48,7 +50,6 @@ void createSons(t_node* node, int nb_moves, int nb_choices, t_move moves[], t_lo
         }
     }
 }
-
 
 void displayTree(t_node* root, int level) {
     if (root == NULL) {
@@ -65,4 +66,40 @@ void displayTree(t_node* root, int level) {
         displayTree(root->sons[i], level + 1);
     }
 }
+
+int evaluateTree(t_node* node) {
+    if (node == NULL) {
+        return INT_MAX; // No valid cost for NULL nodes
+    }
+
+    if (node->nb_sons == 0) {
+        // Leaf node: return its cost
+        //printf("Leaf Node - Cost: %d\n", node->value);
+        return node->value;
+    }
+
+    // Initialize minimum cost to a very high value
+    int min_cost = INT_MAX;
+
+    // Iterate over all children to find the minimum cost
+    for (int i = 0; i < node->nb_sons; i++) {
+        if (node->sons[i] != NULL) {
+            int child_cost = evaluateTree(node->sons[i]);
+            //printf("Child Node - Current Cost: %d, Child Cost: %d, Min Cost: %d\n",node->value, child_cost, min_cost);
+            if (child_cost < min_cost) {
+                min_cost = child_cost;
+            }
+        }
+    }
+
+    // If no valid children, return current node's cost (for edge cases)
+    if (min_cost == INT_MAX) {
+        return node->value;
+    }
+
+    // Return the current node's cost plus the minimum cost of its children
+    //printf("Node - Cost: %d, Min Child Cost: %d, Total Cost: %d\n", node->value, min_cost, node->value + min_cost);
+    return node->value + min_cost;
+}
+
 

@@ -21,7 +21,9 @@ typedef struct t_node {
 t_node * createNode(int value,int nb_sons, t_move move, t_localisation loc);
 
 void createSons(t_node* node, int height, int nb_choices,t_move moves[],t_localisation loc, t_map map);
+
 void displayTree(t_node* node, int level);
 
+int evaluateTree(t_node* node);
 
 #endif //NODE_H
