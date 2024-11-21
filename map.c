@@ -8,16 +8,10 @@
 #include "map.h"
 #include "loc.h"
 #include "queue.h"
+#include <time.h>
 
 /* prototypes of local functions */
 /* local functions are used only in this file, as helper functions */
-
-/**
- * @brief :  function to get the position of the base station
- * @param map : the map
- * @return : the position of the base station
- */
-t_position getBaseStationPosition(t_map);
 
 /**
  * @brief : function to calculate costs of the map  from the base station
@@ -34,6 +28,39 @@ void calculateCosts(t_map);
 void removeFalseCrevasses(t_map);
 
 /* definition of local functions */
+t_localisation defineRobotPosition(t_map map) {
+    t_localisation robot;
+    t_position pos, basePos= getBaseStationPosition(map);
+    srand(time(NULL));
+    while (basePos.x==pos.x && basePos.y==pos.y) {
+        srand(time(NULL));
+        pos.x = rand() % (map.x_max + 1); // [0, x_max]
+        pos.y = rand() % (map.y_max + 1); // [0, y_max]
+    }
+    printf("\nThe robot has just landed at the following position : [%d;%d].\n", pos.x, pos.y);
+    robot.pos = pos;
+
+    srand(time(NULL));
+    robot.ori=(t_orientation)(rand() % 4);
+    switch (robot.ori) {
+        case NORTH:
+            printf("The robot is oriented towards : NORTH\n");
+        break;
+        case EAST:
+            printf("The robot is oriented towards : EAST\n");
+        break;
+        case SOUTH:
+            printf("The robot is oriented towards : SOUTH\n");
+        break;
+        case WEST:
+            printf("The robot is oriented towards : WEST\n");
+        break;
+        default:
+            printf("Signal Lost\n");
+        break;
+    }
+    return robot;
+}
 
 t_position getBaseStationPosition(t_map map)
 {

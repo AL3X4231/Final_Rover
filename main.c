@@ -2,6 +2,7 @@
 #include "map.h"
 #include "node.h"
 #include "moves.h"
+#include "loc.h"
 
 int main() {
     t_map map;
@@ -14,7 +15,7 @@ int main() {
 #else
     map = createMapFromFile("../maps/example1.map");
 #endif
-    /*
+
     printf("Map created with dimensions %d x %d\n", map.y_max, map.x_max);
     for (int i = 0; i < map.y_max; i++){
         for (int j = 0; j < map.x_max; j++){
@@ -30,13 +31,16 @@ int main() {
         printf("\n");
     }
     displayMap(map);
-    */
 
+
+    //localisation de base
+    t_localisation startLoc = defineRobotPosition(map);
+    /*
     // tests arbre
     int nb_moves = 4;  //test avec 4 moves differents
     int nb_choices = 3  ;  // on en prend que 3 sur les 4
     t_move* moves = chooseMove(nb_moves);
-    t_node* root1 = createNode(0, nb_moves, STAY); //root de l'arbre avec move = "STAY"
+    t_node* root1 = createNode(0, nb_moves, STAY, startLoc ); //root de l'arbre avec move = "STAY"
     createSons(root1, nb_moves,nb_choices, moves);
     printf("\nMouvements disponibles (%d moves et %d choix) :\n", nb_moves, nb_choices);
     for (int i=0; i<nb_moves; i++) {
@@ -46,6 +50,7 @@ int main() {
     printf("Arbre associe (chemin prefix) :\n");
     displayTree(root1, nb_choices); //display l'arbre
     printf("\n");
+    */
 
     return 0;
 }
