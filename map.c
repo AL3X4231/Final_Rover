@@ -32,15 +32,15 @@ t_localisation defineRobotPosition(t_map map) {
     t_localisation robot;
     t_position pos, basePos= getBaseStationPosition(map);
     srand(time(NULL));
-    while (basePos.x==pos.x && basePos.y==pos.y) {
-        srand(time(NULL));
-        pos.x = rand() % (map.x_max + 1); // [0, x_max]
-        pos.y = rand() % (map.y_max + 1); // [0, y_max]
-    }
-    printf("\nThe robot has just landed at the following position : [%d;%d].\n", pos.x, pos.y);
+    do {
+        pos.x = rand() % (map.x_max + 1); // Génère un x valide
+        pos.y = rand() % (map.y_max + 1); // Génère un y valide
+    } while (basePos.x == pos.x && basePos.y == pos.y);
+
+    printf("\nThe robot has just landed at the following position : [%d;%d]\n", pos.x, pos.y);
+    printf("We have to reach the base at the position : [%d;%d]\n", basePos.x, basePos.y);
     robot.pos = pos;
 
-    srand(time(NULL));
     robot.ori=(t_orientation)(rand() % 4);
     switch (robot.ori) {
         case NORTH:
