@@ -173,3 +173,25 @@ int evaluateTree(t_node* node, t_path* best_path) {
     
     return min_cost;
 }
+
+
+t_node* minCost(t_node* root) { // NOLINT(*-no-recursion)
+    if (root == NULL) {
+        return NULL;
+    }
+    
+    // On commence avec le nœud courant comme minimum
+    t_node* min_node = root;
+    
+    // Parcourir tous les fils
+    for (int i = 0; i < root->nb_sons; i++) {
+        t_node* son_min = minCost(root->sons[i]);
+        
+        // Si on trouve un fils avec un coût plus petit, on met à jour min_node
+        if (son_min != NULL && son_min->value < min_node->value) {
+            min_node = son_min;
+        }
+    }
+    
+    return min_node;
+}

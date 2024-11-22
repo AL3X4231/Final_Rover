@@ -5,30 +5,6 @@
 #include "loc.h"
 #define INT_MAX 2147483647
 
-t_position findNearestReachablePoint(t_map map) {
-    t_position basePos = getBaseStationPosition(map);
-    t_position nearestPoint = { .x = -1, .y = -1 };
-    int minCost = INT_MAX;
-
-    for (int i = 0; i < map.y_max; i++) {
-        for (int j = 0; j < map.x_max; j++) {
-            if (map.soils[i][j] != CREVASSE && map.costs[i][j] < minCost) {
-                minCost = map.costs[i][j];
-                nearestPoint.x = j;
-                nearestPoint.y = i;
-            }
-        }
-    }
-
-    if (nearestPoint.x != -1 && nearestPoint.y != -1) {
-        printf("Nearest reachable point to base is at: [%d, %d] with cost: %d\n", nearestPoint.x, nearestPoint.y, minCost);
-    } else {
-        printf("No reachable point found.\n");
-    }
-
-    return nearestPoint;
-}
-
 int main() {
     t_map map;
 
@@ -36,7 +12,7 @@ int main() {
     // If either _WIN32 or _WIN64 is defined, it means we are on a Windows platform.
     // On Windows, file paths use backslashes (\), hence we use the appropriate file path for Windows.
 #if defined(_WIN32) || defined(_WIN64)
-    map = createMapFromFile("..\\maps\\example1.map");
+    map = createMapFromFile(".\\maps\\example1.map");
 #else
     map = createMapFromFile("../maps/example1.map");
 #endif
@@ -55,8 +31,8 @@ int main() {
         }
         printf("\n");
     }
-    displayMap(map);*/
-
+    displayMap(map);
+*/
 
     //localisation de base
     t_localisation startLoc = defineRobotPosition(map);
@@ -67,7 +43,7 @@ int main() {
     int nb_choices = 3;  // on en prend que 3 sur les 4
     int level = 0;
     t_move* moves = chooseMove(nb_moves);
-    t_node* root1 = createNode(0, level, nb_moves, STAY, startLoc ); //root de l'arbre avec move = "STAY"
+    t_node* root1 = createNode(1000, level, nb_moves, STAY, startLoc ); //root de l'arbre avec move = "STAY"
     createSons(root1, nb_moves, nb_choices, moves, startLoc, map, level);
     printf("\nMouvements disponibles (%d moves et %d choix) :\n", nb_moves, nb_choices);
     for (int i=0; i<nb_moves; i++) {
@@ -85,7 +61,6 @@ int main() {
 
     if (min_cost == INT_MAX) {
         printf("No valid path to base found.\n");
-        findNearestReachablePoint(map);
     } else {
         printf("\nOptimal path to base (total cost: %d):\n", min_cost);
         for (int i = 0; i < best_path.num_moves; i++) {
@@ -95,6 +70,12 @@ int main() {
             startLoc = newLoc;  // Update position for next move
         }
     }
-
+    t_node* lowest_cost_node = minCost(root1);
+    if (lowest_cost_node != NULL) {
+        printf("Node with lowest cost found:\n");
+        printf("Position: (%d, %d)\n", lowest_cost_node->loc.pos.x, lowest_cost_node->loc.pos.y);
+        printf("Cost: %d\n", lowest_cost_node->value);
+        printf("Movement: %s\n", t_move_to_string(lowest_cost_node->move));
+}
     return 0;
 }

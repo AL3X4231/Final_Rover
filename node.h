@@ -22,7 +22,7 @@ typedef struct t_node {
 
 }t_node;
 
-
+typedef void (*NodeCallback)(t_node* node);
 t_node * createNode(int value,int level,int nb_sons, t_move move, t_localisation loc);
 
 void createSons(t_node* node, int height, int nb_choices,t_move moves[],t_localisation loc, t_map map, int level);
@@ -30,5 +30,7 @@ void createSons(t_node* node, int height, int nb_choices,t_move moves[],t_locali
 void displayTree(t_node* node, int level);
 
 int evaluateTree(t_node* node, t_path* best_path);
+
+t_node* minCost(t_node* root);
 
 #endif //NODE_H
