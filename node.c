@@ -25,19 +25,14 @@ void createSons(t_node* node, int nb_moves, int nb_choices, t_move moves[], t_lo
     if (nb_choices == 0) {
         return;
     }
-    
+
+    /* // ca je met en commentaire parce que si il existe un autre chemin dont
+     * le cout est moins cher ca va pas le prendre en compte ...
     // If we reached the base, stop exploring
     if (loc.pos.x == 2 && loc.pos.y == 1) {
         return;
     }
-    
-    // Calculate Manhattan distance to goal
-    int dist_to_goal = abs(loc.pos.x - 2) + abs(loc.pos.y - 1);
-    
-    // If we can't reach the goal with remaining moves, stop exploring
-    if (dist_to_goal > nb_choices) {
-        return;
-    }
+    */
     
     for (int i = 0; i < nb_moves; i++) {
         t_localisation newLoc = move(loc, moves[i]);
