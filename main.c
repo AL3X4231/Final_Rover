@@ -16,21 +16,21 @@ int main() {
     map = createMapFromFile("../maps/example1.map");
 #endif
 
-    printf("Map created with dimensions %d x %d\n", map.y_max, map.x_max);
+    /*printf("Map created with dimensions %d x %d\n", map.y_max, map.x_max);
     for (int i = 0; i < map.y_max; i++){
         for (int j = 0; j < map.x_max; j++){
             printf("%d ", map.soils[i][j]);
         }
         printf("\n");
-    }
+    }*/
     // printf the costs, aligned left 5 digits
-    for (int i = 0; i < map.y_max; i++){
+    /*for (int i = 0; i < map.y_max; i++){
         for (int j = 0; j < map.x_max; j++){
             printf("%-5d ", map.costs[i][j]);
         }
         printf("\n");
     }
-    displayMap(map);
+    displayMap(map);*/
 
 
     //localisation de base
@@ -39,7 +39,7 @@ int main() {
 
     // tests arbre
     int nb_moves = 9;  //test avec 4 moves differents
-    int nb_choices = 5  ;  // on en prend que 3 sur les 4
+    int nb_choices = 9 ;  // on en prend que 3 sur les 4
     t_move* moves = chooseMove(nb_moves);
     t_node* root1 = createNode(0, nb_moves, STAY, startLoc ); //root de l'arbre avec move = "STAY"
     createSons(root1, nb_moves, nb_choices, moves, startLoc, map);

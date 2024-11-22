@@ -42,21 +42,67 @@ void createSons(t_node* node, int nb_moves, int nb_choices, t_move moves[], t_lo
     for (int i = 0; i < nb_moves; i++) {
         t_localisation newLoc = move(loc, moves[i]);
         
-        // Skip if move is invalid
+        // Skip if final position is invalid
         if (!isValidPosition(newLoc, map.x_max, map.y_max)) {
             continue;
         }
         
-        // Cost is always based on the terrain at the new location
+        // Check intermediate positions for longer moves
+        int valid_path = 1;
+        if (moves[i] == F_20 || moves[i] == F_30) {
+            int steps = (moves[i] == F_20) ? 2 : 3;
+            t_localisation currentLoc = loc;
+            
+            // Check each intermediate step
+            for (int step = 1; step <= steps; step++) {
+                t_localisation intermediateLoc;
+                intermediateLoc.ori = currentLoc.ori;
+                
+                // Calculate intermediate position based on orientation
+                switch (currentLoc.ori) {
+                    case NORTH:
+                        intermediateLoc.pos.x = currentLoc.pos.x;
+                        intermediateLoc.pos.y = currentLoc.pos.y - 1;
+                        break;
+                    case SOUTH:
+                        intermediateLoc.pos.x = currentLoc.pos.x;
+                        intermediateLoc.pos.y = currentLoc.pos.y + 1;
+                        break;
+                    case EAST:
+                        intermediateLoc.pos.x = currentLoc.pos.x + 1;
+                        intermediateLoc.pos.y = currentLoc.pos.y;
+                        break;
+                    case WEST:
+                        intermediateLoc.pos.x = currentLoc.pos.x - 1;
+                        intermediateLoc.pos.y = currentLoc.pos.y;
+                        break;
+                }
+                
+                // Check if intermediate position is valid and not a crevasse/base
+                if (!isValidPosition(intermediateLoc, map.x_max, map.y_max) || 
+                    map.soils[intermediateLoc.pos.y][intermediateLoc.pos.x] == CREVASSE ||
+                    map.soils[intermediateLoc.pos.y][intermediateLoc.pos.x] == BASE_STATION) {
+                    valid_path = 0;
+                    break;
+                }
+                
+                currentLoc = intermediateLoc;
+            }
+        }
+        
+        if (!valid_path) {
+            continue;
+        }
+        
+        // Cost is based on the terrain at the new location
         int cost = map.costs[newLoc.pos.y][newLoc.pos.x];
         if (cost >= 10000) {
             continue;  // Skip invalid terrain
         }
         
-        // Create the node
+        // Create the node and continue with recursion as before
         node->sons[i] = createNode(cost, nb_moves-1, moves[i], newLoc);
         
-        // Create next level moves
         t_move new_tab[nb_moves-1];
         int index = 0;
         for (int j = 0; j < nb_moves; j++) {

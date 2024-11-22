@@ -30,34 +30,35 @@ void removeFalseCrevasses(t_map);
 /* definition of local functions */
 t_localisation defineRobotPosition(t_map map) {
     t_localisation robot;
-    t_position pos, basePos= getBaseStationPosition(map);
+    t_position pos, basePos = getBaseStationPosition(map);
     srand(time(NULL));
     do {
+        printf("!!!!!!!!!!!!!!!!!!!!!!!\n");
         pos.x = rand() % (map.x_max);
         pos.y = rand() % (map.y_max);
-    } while (basePos.x == pos.x && basePos.y == pos.y || map.soils[pos.x][pos.x] == CREVASSE);
+    } while (basePos.x == pos.x && basePos.y == pos.y || map.soils[pos.y][pos.x] == CREVASSE);
 
     printf("\nThe robot has just landed at the following position : [%d;%d]\n", pos.x, pos.y);
     printf("We have to reach the base at the position : [%d;%d]\n", basePos.x, basePos.y);
     robot.pos = pos;
 
-    robot.ori=(t_orientation)(rand() % 4);
+    robot.ori = (t_orientation)(rand() % 4);
     switch (robot.ori) {
         case NORTH:
             printf("The robot is oriented towards : NORTH\n");
-        break;
+            break;
         case EAST:
             printf("The robot is oriented towards : EAST\n");
-        break;
+            break;
         case SOUTH:
             printf("The robot is oriented towards : SOUTH\n");
-        break;
+            break;
         case WEST:
             printf("The robot is oriented towards : WEST\n");
-        break;
+            break;
         default:
             printf("Signal Lost\n");
-        break;
+            break;
     }
     return robot;
 }
