@@ -229,6 +229,7 @@ t_move* chooseMove(int nbmove) {
     }
 
     return list;
+
 }
 
 
