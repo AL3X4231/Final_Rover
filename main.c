@@ -63,21 +63,22 @@ int main() {
     displayMapRobot( map, startLoc.pos);
 
     // tests arbre
-    int nb_moves = 9;  //test avec 4 moves differents
-    int nb_choices = 5  ;  // on en prend que 3 sur les 4
+    int nb_moves = 4;  //test avec 4 moves differents
+    int nb_choices = 3;  // on en prend que 3 sur les 4
+    int level = 0;
     t_move* moves = chooseMove(nb_moves);
-    t_node* root1 = createNode(0, nb_moves, STAY, startLoc ); //root de l'arbre avec move = "STAY"
-    createSons(root1, nb_moves, nb_choices, moves, startLoc, map);
+    t_node* root1 = createNode(0, level, nb_moves, STAY, startLoc ); //root de l'arbre avec move = "STAY"
+    createSons(root1, nb_moves, nb_choices, moves, startLoc, map, level);
     printf("\nMouvements disponibles (%d moves et %d choix) :\n", nb_moves, nb_choices);
     for (int i=0; i<nb_moves; i++) {
         // display la liste de mouvement dispo
         printf("Movement: %s \n", t_move_to_string(moves[i]));
     }
-    /*
+
     printf("\nArbre associe (chemin prefix) :\n");
     displayTree(root1, nb_choices); //display l'arbre
     printf("\n");
-    */
+
 
     t_path best_path = {0};
     int min_cost = evaluateTree(root1, &best_path);

@@ -15,6 +15,7 @@ typedef struct {
 typedef struct t_node {
     int value ;
     int nb_sons;
+    t_move movements[5];
     t_localisation loc;
     t_move move;
     struct t_node * sons[9];
@@ -22,9 +23,9 @@ typedef struct t_node {
 }t_node;
 
 
-t_node * createNode(int value,int nb_sons, t_move move, t_localisation loc);
+t_node * createNode(int value,int level,int nb_sons, t_move move, t_localisation loc);
 
-void createSons(t_node* node, int height, int nb_choices,t_move moves[],t_localisation loc, t_map map);
+void createSons(t_node* node, int height, int nb_choices,t_move moves[],t_localisation loc, t_map map, int level);
 
 void displayTree(t_node* node, int level);
 

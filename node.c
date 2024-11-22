@@ -8,10 +8,11 @@
 
 #define INT_MAX 2147483647
 
-t_node * createNode(int value, int nb_sons, t_move move, t_localisation loc) {
+t_node * createNode(int value,int level, int nb_sons, t_move move, t_localisation loc) {
     t_node * node = (t_node *)malloc(sizeof(t_node));
     node->value = value;
     node->nb_sons = nb_sons;
+    node->movements[level]=move;
     node->move = move;
     node->loc = loc;
     for (int i=0; i < nb_sons; i++) {
@@ -20,7 +21,7 @@ t_node * createNode(int value, int nb_sons, t_move move, t_localisation loc) {
     return node;
 }
 
-void createSons(t_node* node, int nb_moves, int nb_choices, t_move moves[], t_localisation loc, t_map map) {
+void createSons(t_node* node, int nb_moves, int nb_choices, t_move moves[], t_localisation loc, t_map map, int level) {
     // Early exit conditions
     if (nb_choices == 0) {
         return;
@@ -80,7 +81,6 @@ void createSons(t_node* node, int nb_moves, int nb_choices, t_move moves[], t_lo
                     valid_path = 0;
                     break;
                 }
-                
                 currentLoc = intermediateLoc;
             }
         }
@@ -96,7 +96,7 @@ void createSons(t_node* node, int nb_moves, int nb_choices, t_move moves[], t_lo
         }
         
         // Create the node and continue with recursion as before
-        node->sons[i] = createNode(cost, nb_moves-1, moves[i], newLoc);
+        node->sons[i] = createNode(cost, level,nb_moves-1, moves[i], newLoc);
         
         t_move new_tab[nb_moves-1];
         int index = 0;
@@ -105,8 +105,7 @@ void createSons(t_node* node, int nb_moves, int nb_choices, t_move moves[], t_lo
                 new_tab[index++] = moves[j];
             }
         }
-        
-        createSons(node->sons[i], nb_moves-1, nb_choices-1, new_tab, newLoc, map);
+        createSons(node->sons[i], nb_moves-1, nb_choices-1, new_tab, newLoc, map, level+1);
     }
 }
 
@@ -116,8 +115,13 @@ void displayTree(t_node* root, int level) {
     }
     // print la root
     printf("Node cost: %d, Number of sons: %d , Movement: %s \n", root->value, root->nb_sons, t_move_to_string(root->move));
+    printf("movements: ");
+    for (int i = 0; i < level-1; i++) {
+        printf(" %s ",t_move_to_string(root->movements[i]));
+    }
+    printf("\n\n");
 
-    for (int i = 0; i < level; i++) {
+    for (int i = 0; i < level+1; i++) {
         printf("  ");  // Indentation pour chaque niveau dans l'arbre
     }
 
