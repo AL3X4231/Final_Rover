@@ -51,7 +51,7 @@ t_localisation loc_init(int, int, t_orientation);
  * @return 1 if the position is valid, 0 otherwise
  */
 int isValidLocalisation(t_position, int, int);
-
+int isValidPosition(t_localisation loc, int x_max, int y_max);
 /**
  * @brief get the LEFT position of a position
  * @param pos : the position

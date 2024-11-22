@@ -4,8 +4,9 @@
 
 #ifndef UNTITLED1_MAP_H
 #define UNTITLED1_MAP_H
-
 #define COST_UNDEF 65535
+
+#include "loc.h"
 /**
  * @brief Enum for the possible soils of the map
  */
@@ -47,12 +48,14 @@ t_map createMapFromFile(char *);
  * @param none
  * @return a standard map
  */
- t_map createTrainingMap();
-
+t_map createTrainingMap();
+t_position getBaseStationPosition(t_map map);
+t_localisation defineRobotPosition(t_map map);
 /**
  * @brief display the map with characters
  * @param map : the map to display
  */
 void displayMap(t_map);
+void displayMapRobot(t_map , t_position );
 
 #endif //UNTITLED1_MAP_H

@@ -2,13 +2,10 @@
 // Created by flasque on 19/10/2024.
 //
 
-#include "moves.h"
-#include "stdio.h"
-#include <time.h>
 #include <stdlib.h>
-
-
-
+#include "moves.h"
+#include <time.h>
+#include <stdio.h>
 /* prototypes of local functions */
 /* local functions are used only in this file, as helper functions */
 
@@ -32,7 +29,7 @@ t_localisation translate(t_localisation , t_move);
 
 t_orientation rotate(t_orientation ori, t_move move)
 {
-    int rst;
+    int rst=0;
     switch (move)
     {
         case T_LEFT:
@@ -44,7 +41,8 @@ t_orientation rotate(t_orientation ori, t_move move)
         case U_TURN:
             rst=2;
             break;
-        default:
+        default: // should not happen
+            rst=0;
             break;
     }
     return (ori+rst)%4;
@@ -57,7 +55,7 @@ t_localisation translate(t_localisation loc, t_move move)
      *  - y grows to the bottom with step of +1
      *  - the origin (x=0, y=0) is at the top left corner
      */
-    t_position res = loc.pos;
+    t_position res=loc.pos;
     switch (move) {
         case F_10:
             switch (loc.ori) {
@@ -134,7 +132,7 @@ t_localisation translate(t_localisation loc, t_move move)
         default:
             break;
     }
-        return loc_init(res.x, res.y, loc.ori);
+    return loc_init(res.x, res.y, loc.ori);
 
 }
 
@@ -147,9 +145,16 @@ char *getMoveAsString(t_move move)
 
 t_localisation move(t_localisation loc, t_move move)
 {
-    t_localisation new_loc;
-    new_loc.ori = rotate(loc.ori, move);
-    new_loc = translate(loc, move);
+    t_localisation new_loc=loc;
+    if ((move >=T_LEFT) && (move <= U_TURN))
+    {
+        new_loc.ori = rotate(loc.ori, move);
+    }
+    else
+    {
+        new_loc = translate(loc, move);
+    }
+
     return new_loc;
 }
 
@@ -157,6 +162,27 @@ void updateLocalisation(t_localisation *p_loc, t_move m)
 {
     *p_loc = move(*p_loc, m);
     return;
+}
+
+t_move *getRandomMoves(int N)
+{
+    int nbmoves[]={22,15,7,7,21,21,7};
+    int total_moves=100;
+    t_move *moves = (t_move *)malloc(N * sizeof(t_move));
+    for (int i = 0; i < N; i++)
+    {
+        int r = rand() % total_moves;
+        int type=0;
+        while (r >= nbmoves[type])
+        {
+            r -= nbmoves[type];
+            type++;
+        }
+        nbmoves[type]--;
+        total_moves--;
+        moves[i] = (t_move )type;
+    }
+    return moves;
 }
 
 t_move* chooseMove(int nbmove) {
@@ -232,5 +258,16 @@ t_move* chooseMove(int nbmove) {
 
 }
 
-
-
+const char* t_move_to_string(t_move move) {
+    switch (move) {
+        case F_10:    return "Forward 10 m";
+        case F_20:    return "Forward 20 m";
+        case F_30:    return "Forward 30 m";
+        case B_10:    return "Backward 10 m";
+        case T_LEFT:  return "Turn left (+90°)";
+        case T_RIGHT: return "Turn right (-90°)";
+        case U_TURN:  return "U-Turn (180°)";
+        case STAY:  return "Stay at base";
+        default:      return "Unknown move";
+    }
+}

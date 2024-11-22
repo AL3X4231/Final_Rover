@@ -8,16 +8,10 @@
 #include "map.h"
 #include "loc.h"
 #include "queue.h"
+#include <time.h>
 
 /* prototypes of local functions */
 /* local functions are used only in this file, as helper functions */
-
-/**
- * @brief :  function to get the position of the base station
- * @param map : the map
- * @return : the position of the base station
- */
-t_position getBaseStationPosition(t_map);
 
 /**
  * @brief : function to calculate costs of the map  from the base station
@@ -34,6 +28,39 @@ void calculateCosts(t_map);
 void removeFalseCrevasses(t_map);
 
 /* definition of local functions */
+t_localisation defineRobotPosition(t_map map) {
+    t_localisation robot;
+    t_position pos, basePos= getBaseStationPosition(map);
+    srand(time(NULL));
+    do {
+        pos.x = rand() % (map.x_max);
+        pos.y = rand() % (map.y_max);
+    } while (basePos.x == pos.x && basePos.y == pos.y || map.soils[pos.x][pos.x] == CREVASSE);
+
+    printf("\nThe robot has just landed at the following position : [%d;%d]\n", pos.x, pos.y);
+    printf("We have to reach the base at the position : [%d;%d]\n", basePos.x, basePos.y);
+    robot.pos = pos;
+
+    robot.ori=(t_orientation)(rand() % 4);
+    switch (robot.ori) {
+        case NORTH:
+            printf("The robot is oriented towards : NORTH\n");
+        break;
+        case EAST:
+            printf("The robot is oriented towards : EAST\n");
+        break;
+        case SOUTH:
+            printf("The robot is oriented towards : SOUTH\n");
+        break;
+        case WEST:
+            printf("The robot is oriented towards : WEST\n");
+        break;
+        default:
+            printf("Signal Lost\n");
+        break;
+    }
+    return robot;
+}
 
 t_position getBaseStationPosition(t_map map)
 {
@@ -292,6 +319,88 @@ void displayMap(t_map map)
                     default:
                         strcpy(c, "???");
                         break;
+                }
+                printf("%s", c);
+            }
+            printf("\n");
+        }
+
+    }
+    return;
+}
+
+void displayMapRobot(t_map map, t_position robot) {
+    /** the rules for display are :
+     * display all soils with 3x3 characters
+     * characters are : B for base station, '-' for plain, '~' for erg, '^' for reg, ' ' for crevasse
+     */
+    for (int i = 0; i < map.y_max; i++)
+    {
+        for (int rep = 0; rep < 3; rep++)
+        {
+            for (int j = 0; j < map.x_max; j++)
+            {
+                char c[4];
+                switch (map.soils[i][j])
+                {
+                    case BASE_STATION:
+                        if (rep==1)
+                        {
+                            strcpy(c, " B ");
+                        }
+                        else
+                        {
+                            strcpy(c, "   ");
+                        }
+                    break;
+                    case PLAIN:
+                        if (robot.x == j && robot.y == i) {
+                            if (rep==1)
+                            {
+                                strcpy(c, " R ");
+                            }
+                            else
+                            {
+                                strcpy(c, "   ");
+                            }
+                        }else {
+                            strcpy(c, "---");
+                        }
+                    break;
+                    case ERG:
+                        if (robot.x == j && robot.y == i) {
+                            if (rep==1)
+                            {
+                                strcpy(c, " R ");
+                            }
+                            else
+                            {
+                                strcpy(c, "   ");
+                            }
+                        }else {
+                            strcpy(c, "~~~");
+                        }
+                    break;
+                    case REG:
+                        if (robot.x == j && robot.y == i) {
+                            if (rep==1)
+                            {
+                                strcpy(c, " R ");
+                            }
+                            else
+                            {
+                                strcpy(c, "   ");
+                            }
+                        }else {
+                            strcpy(c, "^^^");
+                        }
+                    break;
+                    case CREVASSE:
+                        sprintf(c, "%c%c%c",219,219,219);
+                    break;
+                    default:
+                        strcpy(c, "???");
+                    break;
                 }
                 printf("%s", c);
             }
