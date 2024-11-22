@@ -7,6 +7,10 @@
 #include "moves.h"
 #include "map.h"
 
+typedef struct {
+    t_move moves[10];
+    int num_moves;
+} t_path;
 
 typedef struct t_node {
     int value ;
@@ -24,6 +28,6 @@ void createSons(t_node* node, int height, int nb_choices,t_move moves[],t_locali
 
 void displayTree(t_node* node, int level);
 
-int evaluateTree(t_node* node);
+int evaluateTree(t_node* node, t_path* best_path);
 
 #endif //NODE_H

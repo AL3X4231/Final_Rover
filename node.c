@@ -4,6 +4,9 @@
 #include "loc.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+#define INT_MAX 2147483647
 
 t_node * createNode(int value, int nb_sons, t_move move, t_localisation loc) {
     t_node * node = (t_node *)malloc(sizeof(t_node));
@@ -18,36 +21,51 @@ t_node * createNode(int value, int nb_sons, t_move move, t_localisation loc) {
 }
 
 void createSons(t_node* node, int nb_moves, int nb_choices, t_move moves[], t_localisation loc, t_map map) {
+    // Early exit conditions
     if (nb_choices == 0) {
         return;
-    } else {
-        for (int i=0; i < nb_moves; i++) {
-            // value doit etre remplacée par le cost
-            int cost;
-            t_localisation newLoc = move(loc, moves[i]); //focntion de newloc
-
-            //test si le robot est toujours sur la carte
-            //printf("\nx_max at y max : %d %d", map.x_max, map.y_max);
-            //printf("\nposition du bot : %d %d", newLoc.pos.x, newLoc.pos.y);
-            if(isValidPosition(newLoc, map.x_max,  map.y_max)){
-                //printf("valid");
-                cost = map.costs[newLoc.pos.x][newLoc.pos.y];
-            } else {
-                //printf("\nThe robot jumps  of the map !?!\n");
-                cost = 10000;
-            }
-            node->sons[i] = createNode(cost,nb_moves-1, moves[i], newLoc); ///rajouter soil
-
-            t_move new_tab[nb_moves-1];
-            // Construire un tableau sans le mouvement actuel
-            int index = 0;
-            for (int j = 0; j < nb_moves; j++) {
-                if (j != i) {
-                    new_tab[index++] = moves[j];
-                }
-            }
-            createSons(node->sons[i],nb_moves-1,nb_choices-1, new_tab, newLoc, map);
+    }
+    
+    // If we reached the base, stop exploring
+    if (loc.pos.x == 2 && loc.pos.y == 1) {
+        return;
+    }
+    
+    // Calculate Manhattan distance to goal
+    int dist_to_goal = abs(loc.pos.x - 2) + abs(loc.pos.y - 1);
+    
+    // If we can't reach the goal with remaining moves, stop exploring
+    if (dist_to_goal > nb_choices) {
+        return;
+    }
+    
+    for (int i = 0; i < nb_moves; i++) {
+        t_localisation newLoc = move(loc, moves[i]);
+        
+        // Skip if move is invalid
+        if (!isValidPosition(newLoc, map.x_max, map.y_max)) {
+            continue;
         }
+        
+        // Cost is always based on the terrain at the new location
+        int cost = map.costs[newLoc.pos.y][newLoc.pos.x];
+        if (cost >= 10000) {
+            continue;  // Skip invalid terrain
+        }
+        
+        // Create the node
+        node->sons[i] = createNode(cost, nb_moves-1, moves[i], newLoc);
+        
+        // Create next level moves
+        t_move new_tab[nb_moves-1];
+        int index = 0;
+        for (int j = 0; j < nb_moves; j++) {
+            if (j != i) {
+                new_tab[index++] = moves[j];
+            }
+        }
+        
+        createSons(node->sons[i], nb_moves-1, nb_choices-1, new_tab, newLoc, map);
     }
 }
 
@@ -67,39 +85,46 @@ void displayTree(t_node* root, int level) {
     }
 }
 
-int evaluateTree(t_node* node) {
+int evaluateTree(t_node* node, t_path* best_path) {
     if (node == NULL) {
-        return INT_MAX; // No valid cost for NULL nodes
+        return INT_MAX;
     }
-
+    
+    // If we reached the base, return 0 (don't count the base's cost)
+    if (node->loc.pos.x == 2 && node->loc.pos.y == 1) {
+        return 0;  // Changed from node->value
+    }
+    
+    // If leaf node and not at base, invalid path
     if (node->nb_sons == 0) {
-        // Leaf node: return its cost
-        //printf("Leaf Node - Cost: %d\n", node->value);
-        return node->value;
+        return INT_MAX;
     }
-
-    // Initialize minimum cost to a very high value
+    
     int min_cost = INT_MAX;
-
-    // Iterate over all children to find the minimum cost
+    t_path current_path = {0};
+    
+    // Find best path through children
     for (int i = 0; i < node->nb_sons; i++) {
         if (node->sons[i] != NULL) {
-            int child_cost = evaluateTree(node->sons[i]);
-            //printf("Child Node - Current Cost: %d, Child Cost: %d, Min Cost: %d\n",node->value, child_cost, min_cost);
-            if (child_cost < min_cost) {
-                min_cost = child_cost;
+            t_path temp_path = {0};
+            int child_cost = evaluateTree(node->sons[i], &temp_path);
+            
+            if (child_cost != INT_MAX) {
+                // Include the cost of the current move
+                int total_cost = node->sons[i]->value + child_cost;
+                if (total_cost < min_cost) {
+                    min_cost = total_cost;
+                    current_path.moves[0] = node->sons[i]->move;
+                    memcpy(&current_path.moves[1], temp_path.moves, temp_path.num_moves * sizeof(t_move));
+                    current_path.num_moves = temp_path.num_moves + 1;
+                }
             }
         }
     }
-
-    // If no valid children, return current node's cost (for edge cases)
-    if (min_cost == INT_MAX) {
-        return node->value;
+    
+    if (min_cost != INT_MAX && best_path != NULL) {
+        *best_path = current_path;
     }
-
-    // Return the current node's cost plus the minimum cost of its children
-    //printf("Node - Cost: %d, Min Child Cost: %d, Total Cost: %d\n", node->value, min_cost, node->value + min_cost);
-    return node->value + min_cost;
+    
+    return min_cost;
 }
-
-
