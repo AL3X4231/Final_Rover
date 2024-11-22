@@ -3,6 +3,31 @@
 #include "node.h"
 #include "moves.h"
 #include "loc.h"
+#define INT_MAX 2147483647
+
+t_position findNearestReachablePoint(t_map map) {
+    t_position basePos = getBaseStationPosition(map);
+    t_position nearestPoint = { .x = -1, .y = -1 };
+    int minCost = INT_MAX;
+
+    for (int i = 0; i < map.y_max; i++) {
+        for (int j = 0; j < map.x_max; j++) {
+            if (map.soils[i][j] != CREVASSE && map.costs[i][j] < minCost) {
+                minCost = map.costs[i][j];
+                nearestPoint.x = j;
+                nearestPoint.y = i;
+            }
+        }
+    }
+
+    if (nearestPoint.x != -1 && nearestPoint.y != -1) {
+        printf("Nearest reachable point to base is at: [%d, %d] with cost: %d\n", nearestPoint.x, nearestPoint.y, minCost);
+    } else {
+        printf("No reachable point found.\n");
+    }
+
+    return nearestPoint;
+}
 
 int main() {
     t_map map;
@@ -56,12 +81,18 @@ int main() {
 
     t_path best_path = {0};
     int min_cost = evaluateTree(root1, &best_path);
-    printf("\nOptimal path to base (total cost: %d):\n", min_cost);
-    for (int i = 0; i < best_path.num_moves; i++) {
-        t_localisation newLoc = move(startLoc, best_path.moves[i]);
-        int move_cost = map.costs[newLoc.pos.y][newLoc.pos.x];
-        printf("%d. %s (cost: %d)\n", i+1, t_move_to_string(best_path.moves[i]), move_cost);
-        startLoc = newLoc;  // Update position for next move
+
+    if (min_cost == INT_MAX) {
+        printf("No valid path to base found.\n");
+        findNearestReachablePoint(map);
+    } else {
+        printf("\nOptimal path to base (total cost: %d):\n", min_cost);
+        for (int i = 0; i < best_path.num_moves; i++) {
+            t_localisation newLoc = move(startLoc, best_path.moves[i]);
+            int move_cost = map.costs[newLoc.pos.y][newLoc.pos.x];
+            printf("%d. %s (cost: %d)\n", i+1, t_move_to_string(best_path.moves[i]), move_cost);
+            startLoc = newLoc;  // Update position for next move
+        }
     }
 
     return 0;
