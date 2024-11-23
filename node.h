@@ -33,7 +33,6 @@ typedef struct t_node {
     t_localisation loc;
     t_move move;
     struct t_node * sons[9];
-
 }t_node;
 
 typedef void (*NodeCallback)(t_node* node);

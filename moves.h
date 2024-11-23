@@ -28,14 +28,12 @@ typedef enum e_move
     STAY // initialize the robot on the root of the tree
 } t_move;
 
-const char* t_move_to_string(t_move move);
-
 /**
  * @brief function to get a t_move as a string
- * @param move : the move to convert
+ * @param move : the move to convert in a string
  * @return the string corresponding to the move
  */
-char *getMoveAsString(t_move move);
+const char* t_move_to_string(t_move move);
 
 /**
  * @brief function to update the localisation of the robot according to a move
@@ -52,6 +50,15 @@ t_localisation move(t_localisation loc, t_move move);
  * @return none
  */
 void updateLocalisation(t_localisation *, t_move);
+
+/**
+ * @brief function to get a list with random movements
+ *        (it picks the movements at random but also with
+ *        different probabilities that evolved with respect
+ *        to the past chosen movement)
+ * @param nbmove : the number of movements we want
+ * @return the pointer leading to a list with the chosen moves
+ */
 t_move* chooseMove(int nbmove);
 
 
