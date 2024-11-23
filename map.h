@@ -71,6 +71,6 @@ void displayMap(t_map);
  * @brief display the map with the rover on it with characters
  * @param map : the map to display
  */
-void displayMapRobot(t_map , t_position );
+void displayMapRobot(t_map , t_position,t_orientation orientation );
 
 #endif //UNTITLED1_MAP_H
