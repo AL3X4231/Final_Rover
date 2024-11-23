@@ -81,51 +81,6 @@ void displayTree(t_node* root, int level) {
     }
 }
 
-int evaluateTree(t_node* node, t_path* best_path) {
-    if (node == NULL) {
-        return INT_MAX;
-    }
-    
-    // If we reached the base, return 0 (don't count the base's cost)
-    if (node->loc.pos.x == 2 && node->loc.pos.y == 1) {
-        return 0;  // Changed from node->value
-    }
-    
-    // If leaf node and not at base, invalid path
-    if (node->nb_sons == 0) {
-        return INT_MAX;
-    }
-    
-    int min_cost = INT_MAX;
-    t_path current_path = {0};
-    
-    // Find best path through children
-    for (int i = 0; i < node->nb_sons; i++) {
-        if (node->sons[i] != NULL) {
-            t_path temp_path = {0};
-            int child_cost = evaluateTree(node->sons[i], &temp_path);
-            
-            if (child_cost != INT_MAX) {
-                // Include the cost of the current move
-                int total_cost = node->sons[i]->value + child_cost;
-                if (total_cost < min_cost) {
-                    min_cost = total_cost;
-                    current_path.moves[0] = node->sons[i]->move;
-                    memcpy(&current_path.moves[1], temp_path.moves, temp_path.num_moves * sizeof(t_move));
-                    current_path.num_moves = temp_path.num_moves + 1;
-                }
-            }
-        }
-    }
-    
-    if (min_cost != INT_MAX && best_path != NULL) {
-        *best_path = current_path;
-    }
-    
-    return min_cost;
-}
-
-
 t_node* minCost(t_node* root) {
     if (root == NULL) {
         return NULL;
@@ -160,4 +115,5 @@ void displayNodePath(t_node* node) {
             printf("%s -> ", t_move_to_string(node->movements[i]));
         }
     }
+    printf("\n");
 }

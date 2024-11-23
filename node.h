@@ -75,14 +75,6 @@ void displayTree(t_node* node, int level);
 * @return : the function returns nothing
 */
 
-int evaluateTree(t_node* node, t_path* best_path);
-/**
-* @brief function browses the tree and find the smaller cost
-* @param node : the node is the root of the tree
-* @param level : the heigth of the tree
-* the function returns nothing
-*/
-
 t_node* minCost(t_node* root);
 /**
 * @brief function browses the entire tree and find the

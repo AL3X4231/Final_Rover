@@ -44,13 +44,6 @@ typedef struct s_map
 t_map createMapFromFile(char *);
 
 /**
- * @brief Function to create a standard training map (11x11 with only plains and base station in the middle)
- * @param none
- * @return a standard map
- */
-t_map createTrainingMap();
-
-/**
  * @brief Function to get the position of the base station
  *        (it browse the map to find a soil = "B")
  * @param map : the current map
