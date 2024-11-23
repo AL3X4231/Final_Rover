@@ -12,23 +12,23 @@ t_node * createNode(int value, int level, int nb_sons, t_move move, t_localisati
     t_node * node = (t_node *)malloc(sizeof(t_node));
     node->value = value;
     node->nb_sons = nb_sons;
-    node->move = move;
     node->loc = loc;
+    node->move = move;
     
-    // Initialize all movements to F_10 (or another sentinel value)
+    // Initialize movements array with the current move
     for (int i = 0; i < 5; i++) {
-        node->movements[i] = F_10;  // Using F_10 as default value
+        if (i == level) {
+            node->movements[i] = move;
+        } else {
+            node->movements[i] = STAY;  // Use STAY as sentinel value
+        }
     }
     
-    // Set the current level's move
-    if (move != F_10) {  // If it's not the root node
-        node->movements[level] = move;
-    }
-    
-    // Initialize all sons to NULL
-    for (int i = 0; i < nb_sons; i++) {
+    // Initialize sons array
+    for (int i = 0; i < 9; i++) {
         node->sons[i] = NULL;
     }
+    
     return node;
 }
 
@@ -126,23 +126,38 @@ int evaluateTree(t_node* node, t_path* best_path) {
 }
 
 
-t_node* minCost(t_node* root) { // NOLINT(*-no-recursion)
+t_node* minCost(t_node* root) {
     if (root == NULL) {
         return NULL;
     }
     
-    // On commence avec le nœud courant comme minimum
-    t_node* min_node = root;
+    // Check if current position is valid (not a crevasse and within bounds)
+    if (root->value >= 10000) {
+        return NULL;
+    }
     
-    // Parcourir tous les fils
+    // Start with the current node as minimum
+    t_node* min_node = root;
+    int min_cost = root->value;
+    
+    // Check all children
     for (int i = 0; i < root->nb_sons; i++) {
         t_node* son_min = minCost(root->sons[i]);
         
-        // Si on trouve un fils avec un coût plus petit, on met à jour min_node
-        if (son_min != NULL && son_min->value < min_node->value) {
+        if (son_min != NULL && son_min->value < min_cost) {
             min_node = son_min;
+            min_cost = son_min->value;
         }
     }
     
     return min_node;
+}
+
+void displayNodePath(t_node* node) {
+    printf("Path to this node: ");
+    for (int i = 0; i < 5; i++) {
+        if (node->movements[i] != STAY) {
+            printf("%s -> ", t_move_to_string(node->movements[i]));
+        }
+    }
 }

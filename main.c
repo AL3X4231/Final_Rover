@@ -80,14 +80,8 @@ int main() {
         printf("Position: (%d, %d)\n", lowest_cost_node->loc.pos.x, lowest_cost_node->loc.pos.y);
         printf("Cost: %d\n", lowest_cost_node->value);
         
-        // Display the path to this node
-        printf("Path to this node: ");
-        for (int i = 0; i < 5; i++) {
-            if (lowest_cost_node->movements[i] != F_10) {  // F_10 is our sentinel value
-                printf("%s -> ", t_move_to_string(lowest_cost_node->movements[i]));
-            }
-        }
-        printf("Last move: %s\n", t_move_to_string(lowest_cost_node->move));
+        // Display the complete path including the first move
+        displayNodePath(lowest_cost_node);
         
         // Display map with new position
         displayMapRobot(map, lowest_cost_node->loc.pos);
