@@ -39,7 +39,7 @@ void createSons(t_node* node, int nb_moves, int nb_choices, t_move moves[], t_lo
     
     for (int i = 0; i < nb_moves; i++) {
         t_localisation newLoc = move(loc, moves[i]);
-        if (isValidPosition(newLoc, map.x_max, map.y_max)) {
+        if (isValidLocalisation(newLoc.pos, map.x_max, map.y_max)) {
             t_node* son = createNode(map.costs[newLoc.pos.y][newLoc.pos.x], 
                                    level + 1, 
                                    nb_moves, 
