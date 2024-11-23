@@ -69,13 +69,6 @@ void displayTree(t_node* root, int level) {
         printf("  ");
     }
     
-    // Print node info and movement history
-    // printf("Node cost: %d, Movements: ", root->value);
-    // for (int i = 0; i < level; i++) {
-    //     printf("%s -> ", t_move_to_string(root->movements[i]));
-    // }
-    // printf("\n");
-    
     for (int i = 0; i < root->nb_sons; i++) {
         displayTree(root->sons[i], level + 1);
     }
