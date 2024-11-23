@@ -274,6 +274,11 @@ t_map createMapFromFile(char *filename)
     return map;
 }
 
+t_map createTrainingMap()
+{
+    return createMapFromFile("..\\maps\\training.map");
+}
+
 void displayMap(t_map map)
 {
     /** the rules for display are :
@@ -327,9 +332,8 @@ void displayMap(t_map map)
 void displayMapRobot(t_map map, t_position robot) {
     /** the rules for display are :
      * display all soils with 3x3 characters
-     * characters are : B for base station, '-' for plain, '~' for erg, '^' for reg, ' ' for crevasse, R for the Rover
+     * characters are : B for base station, '-' for plain, '~' for erg, '^' for reg, ' ' for crevasse
      */
-    printf("\nMAP :\n");
     for (int i = 0; i < map.y_max; i++)
     {
         for (int rep = 0; rep < 3; rep++)

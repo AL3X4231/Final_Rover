@@ -4,10 +4,11 @@
 #include "moves.h"
 #include "loc.h"
 #define INT_MAX 2147483647
+#include <stdlib.h>
 
 int main() {
     // creation of the map using predefine patern in the file "example1.map"
-    t_map map= createMapFromFile("..\\maps\\example1.map");
+    t_map map= createMapFromFile(".\\maps\\example1.map");
 
     // definition of the random localisation of the rover
     t_localisation startLoc = defineRobotPosition(map);
@@ -66,11 +67,16 @@ int main() {
 
     // while the rover didn't reach the base station :
     while (current_node != NULL && current_node->value != 0) {
+        // Free previous moves and generate new ones
+        free(moves);
+        moves = chooseMove(nb_moves);
+        
         // Print moves
         printf("\nAvailable moves for this execution:\n");
         for (int i = 0; i < nb_moves; i++) {
             printf("%d. %s\n", i + 1, t_move_to_string(moves[i]));
         }
+        
         // Create new tree from current position
         root1 = createNode(current_node->value, 0, nb_moves, F_10, current_node->loc);
         createSons(root1, nb_moves, nb_choices, moves, current_node->loc, map, 0);
@@ -82,10 +88,15 @@ int main() {
             printf("Node with lowest cost found:\n");
             printf("Position: (%d, %d)\n", current_node->loc.pos.x, current_node->loc.pos.y);
             printf("Cost: %d\n", current_node->value);
+            displayNodePath(current_node);
+
             newLoc = current_node->loc;
             displayMapRobot(map, newLoc.pos);
         }
     }
+
+    // Free final moves array before exit
+    free(moves);
 
     // the rover is arrived hopefully :)
     printf("\nALERT : The Rover is arriving in the base station ! Well Played !\n");

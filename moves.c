@@ -179,7 +179,9 @@ t_move *getRandomMoves(int N)
 }
 
 t_move* chooseMove(int nbmove) {
-    srand(time(NULL));
+    // Add static counter to ensure different seeds
+    static unsigned int counter = 0;
+    srand(time(NULL) + counter++ * 7777); // Multiply counter by 1000 for more variation
 
     t_move* list = malloc(nbmove * sizeof(t_move));
     if (list == NULL) {
@@ -187,68 +189,39 @@ t_move* chooseMove(int nbmove) {
         return NULL;
     }
 
-    int r;
-
-    // Threshold values for each move type
-    int max_F10 = 21;
-    int max_F20 = 36;
-    int max_F30 = 43;
-    int max_B10 = 50;
-    int max_RIGHT = 71;
-    int max_LEFT = 92;
-    int max_UTurn = 99;
+    // Initialize remaining moves count with initial probabilities
+    int remaining_moves[7] = {
+        22, // F_10
+        15, // F_20
+        7,  // F_30
+        7,  // B_10
+        21, // T_RIGHT
+        21, // T_LEFT
+        7   // U_TURN
+    };
+    int total = 100;
 
     for (int i = 0; i < nbmove; i++) {
-        r = rand() % (max_UTurn+1); // Generate a random number between 1 and max_UTurn
+        int r = rand() % total;
+        int move_type = 0;
+        int sum = 0;
 
-        if (r <= max_F10) {
-            list[i] = F_10;
-            max_F10--;
-            max_F20--;
-            max_F30--;
-            max_B10--;
-            max_RIGHT--;
-            max_LEFT--;
-            max_UTurn--;
-
-        } else if (r <= max_F20) {
-            list[i] = F_20;
-            max_F20--;
-            max_F30--;
-            max_B10--;
-            max_RIGHT--;
-            max_LEFT--;
-            max_UTurn--;
-        } else if (r <= max_F30) {
-            list[i] = F_30;
-            max_F30--;
-            max_B10--;
-            max_RIGHT--;
-            max_LEFT--;
-            max_UTurn--;
-        } else if (r <= max_B10) {
-            list[i] = B_10;
-            max_B10--;
-            max_RIGHT--;
-            max_LEFT--;
-            max_UTurn--;
-        } else if (r <= max_RIGHT) {
-            list[i] = T_RIGHT;
-            max_RIGHT--;
-            max_LEFT--;
-            max_UTurn--;
-        } else if (r <= max_LEFT) {
-            list[i] = T_LEFT;
-            max_LEFT--;
-            max_UTurn--;
-        } else {
-            list[i] = U_TURN;
-            max_UTurn--;
+        // Select move based on remaining probabilities
+        for (int j = 0; j < 7; j++) {
+            sum += remaining_moves[j];
+            if (r < sum) {
+                move_type = j;
+                break;
+            }
         }
+
+        // Update remaining moves
+        remaining_moves[move_type]--;
+        total--;
+        list[i] = (t_move)move_type;
     }
 
     return list;
-
 }
 
 const char* t_move_to_string(t_move move) {
