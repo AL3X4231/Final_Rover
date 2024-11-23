@@ -49,13 +49,35 @@ t_map createMapFromFile(char *);
  * @return a standard map
  */
 t_map createTrainingMap();
+
+/**
+ * @brief Function to get the position of the base station
+ *        (it browse the map to find a soil = "B")
+ * @param map : the current map
+ * @return the position of the base station in the map
+ */
 t_position getBaseStationPosition(t_map map);
+
+/**
+ * @brief Function to randomly define a localisation for our rover
+ *        (when the rover landed on the planet :
+ *        we need its position ('pos' structure)
+ *        and its orientation ('ori' structure))
+ * @param map : the current map
+ * @return the localisation of the rover after launched on the map
+ */
 t_localisation defineRobotPosition(t_map map);
+
 /**
  * @brief display the map with characters
  * @param map : the map to display
  */
 void displayMap(t_map);
+
+/**
+ * @brief display the map with the rover on it with characters
+ * @param map : the map to display
+ */
 void displayMapRobot(t_map , t_position );
 
 #endif //UNTITLED1_MAP_H
