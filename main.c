@@ -5,6 +5,8 @@
 #include "loc.h"
 #define INT_MAX 2147483647
 #include <stdlib.h>
+#include <dirent.h>
+#include <string.h>
 
 void printDayHeader(int day) {
     printf("\n");
@@ -35,7 +37,36 @@ void printMissionComplete(int day) {
 }
 
 int main() {
-    t_map map = createMapFromFile(".\\maps\\example1.map");
+    // Display available maps
+    printf("Available maps:\n");
+    DIR *d;
+    struct dirent *dir;
+    int map_count = 0;
+    char map_files[100][256];
+    
+    d = opendir(".\\maps");
+    if (d) {
+        while ((dir = readdir(d)) != NULL) {
+            if (strstr(dir->d_name, ".map") != NULL) {
+                printf("%d. %s\n", map_count + 1, dir->d_name);
+                strcpy(map_files[map_count], dir->d_name);
+                map_count++;
+            }
+        }
+        closedir(d);
+    }
+    
+    // Get user choice
+    int choice;
+    do {
+        printf("\nChoose a map (1-%d): ", map_count);
+        scanf("%d", &choice);
+    } while (choice < 1 || choice > map_count);
+    
+    // Create map path and load selected map
+    char map_path[300] = ".\\maps\\";
+    strcat(map_path, map_files[choice-1]);
+    t_map map = createMapFromFile(map_path);
     t_localisation startLoc = defineRobotPosition(map);
     int day = 1;
     int nb_moves = 5;
