@@ -233,7 +233,7 @@ const char* t_move_to_string(t_move move) {
         case T_LEFT:  return "Turn left +90";
         case T_RIGHT: return "Turn right -90";
         case U_TURN:  return "U-Turn 180";
-        case STAY:  return "Stay at base";
+        case STAY:  return "Stay";
         default:      return "Unknown move";
     }
 }
