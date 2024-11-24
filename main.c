@@ -56,7 +56,7 @@ int main() {
         closedir(d);
     }
     
-    // Get user choice
+    //Get user choice
     int choice;
     do {
         printf("\nChoose a map (1-%d): ", map_count);
