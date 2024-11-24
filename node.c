@@ -110,7 +110,7 @@ void displayNodePath(t_node* node, t_map map) {
     }
     t_position basePos = getBaseStationPosition(map);
     if (node->loc.pos.x == basePos.x && node->loc.pos.y == basePos.y) {
-        printf("arrived");
+        printf("BASE");
     } else {
         printf("%s", t_move_to_string(node->movements[4]));
     }
