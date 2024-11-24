@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define INT_MAX 2147483647
 
 t_node * createNode(int value, int level, int nb_sons, t_move move, t_localisation loc) {
     t_node * node = (t_node *)malloc(sizeof(t_node));

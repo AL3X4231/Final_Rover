@@ -29,11 +29,11 @@ void printMovesList(t_move* moves, int nb_moves) {
 
 void printMissionComplete(int day) {
     printf("\n");
-    printf("+------------------------------------------------+\n");
+    printf("+-------------------------------------------------+\n");
     printf("|                MISSION COMPLETE!                |\n");
     printf("|    The rover has successfully reached the base  |\n");
     printf("|             Total days on Mars: %-3d             |\n", day);
-    printf("+------------------------------------------------+\n");
+    printf("+-------------------------------------------------+\n");
 }
 
 int main() {
