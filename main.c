@@ -3,7 +3,6 @@
 #include "node.h"
 #include "moves.h"
 #include "loc.h"
-#define INT_MAX 2147483647
 #include <stdlib.h>
 #include <dirent.h>
 #include <string.h>
@@ -27,12 +26,13 @@ void printMovesList(t_move* moves, int nb_moves) {
     printf("\n");
 }
 
+
 void printMissionComplete(int day) {
     printf("\n");
     printf("+------------------------------------------------+\n");
-    printf("|                MISSION COMPLETE!                 |\n");
+    printf("|                MISSION COMPLETE!                |\n");
     printf("|    The rover has successfully reached the base  |\n");
-    printf("|             Total days on Mars: %-3d            |\n", day);
+    printf("|             Total days on Mars: %-3d             |\n", day);
     printf("+------------------------------------------------+\n");
 }
 
@@ -44,7 +44,7 @@ int main() {
     int map_count = 0;
     char map_files[100][256];
     
-    d = opendir(".\\maps");
+    d = opendir("..\\maps");
     if (d) {
         while ((dir = readdir(d)) != NULL) {
             if (strstr(dir->d_name, ".map") != NULL) {
@@ -64,7 +64,7 @@ int main() {
     } while (choice < 1 || choice > map_count);
     
     // Create map path and load selected map
-    char map_path[300] = ".\\maps\\";
+    char map_path[300] = "..\\maps\\";
     strcat(map_path, map_files[choice-1]);
     t_map map = createMapFromFile(map_path);
     t_localisation startLoc = defineRobotPosition(map);
