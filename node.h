@@ -85,7 +85,7 @@ t_node* minCost(t_node* root);
 * @return : this function returns the node with the smaller cost
 */
 
-void displayNodePath(t_node* node);
+void displayNodePath(t_node* node, t_map map);
 /**
 * @brief function simply display the path of the node
 *        (in other words, it displays each movement (in node->movements[])

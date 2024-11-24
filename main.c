@@ -114,7 +114,7 @@ int main() {
             printf("Distance to base: %d units\n", current_node->value);
             
             printSection("MOVEMENT PATH");
-            displayNodePath(current_node);
+            displayNodePath(current_node, map);
             
             printSection("CURRENT MAP");
             displayMapRobot(map, current_node->loc.pos, current_node->loc.ori);

@@ -101,14 +101,18 @@ t_node* minCost(t_node* root) {
     return min_node;
 }
 
-void displayNodePath(t_node* node) {
+void displayNodePath(t_node* node, t_map map) {
     printf("Path to this node: ");
     for (int i = 0; i < 4; i++) {
         if (node->movements[i] != STAY) {
             printf("%s -> ", t_move_to_string(node->movements[i]));
         }
-
     }
-    printf("%s", t_move_to_string(node->movements[4]));
+    t_position basePos = getBaseStationPosition(map);
+    if (node->loc.pos.x == basePos.x && node->loc.pos.y == basePos.y) {
+        printf("arrived");
+    } else {
+        printf("%s", t_move_to_string(node->movements[4]));
+    }
     printf("\n");
 }
