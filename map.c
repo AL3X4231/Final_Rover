@@ -37,8 +37,8 @@ t_localisation defineRobotPosition(t_map map) {
         pos.y = rand() % (map.y_max);
     } while (basePos.x == pos.x && basePos.y == pos.y || map.soils[pos.y][pos.x] == CREVASSE);
 
-    printf("\nThe robot has just landed at the following position : [%d;%d]\n", pos.x+1, pos.y+1);
-    printf("We have to reach the base at the position : [%d;%d]\n", basePos.x+1, basePos.y+1);
+    printf("\nThe robot has just landed at the following position : [%d;%d]\n", pos.x, pos.y);
+    printf("We have to reach the base at the position : [%d;%d]\n", basePos.x, basePos.y);
     robot.pos = pos;
 
     robot.ori = (t_orientation)(rand() % 4);
@@ -329,7 +329,7 @@ void displayMap(t_map map)
     return;
 }
 
-void displayMapRobot(t_map map, t_position robot) {
+void displayMapRobot(t_map map, t_position robot, t_orientation orientation) {
     /** the rules for display are :
      * display all soils with 3x3 characters
      * characters are : B for base station, '-' for plain, '~' for erg, '^' for reg, ' ' for crevasse
@@ -344,20 +344,38 @@ void displayMapRobot(t_map map, t_position robot) {
                 switch (map.soils[i][j])
                 {
                     case BASE_STATION:
-                        if (rep==1)
-                        {
-                            strcpy(c, " B ");
-                        }
-                        else
-                        {
-                            strcpy(c, "   ");
+                        if (robot.x == j && robot.y == i) {
+                            if (rep==1) {
+                                strcpy(c, "RB ");
+                            } else {
+                                strcpy(c, "   ");
+                            }
+                        } else {
+                            if (rep==1) {
+                                strcpy(c, " B ");
+                            } else {
+                                strcpy(c, "   ");
+                            }
                         }
                     break;
                     case PLAIN:
                         if (robot.x == j && robot.y == i) {
                             if (rep==1)
                             {
-                                strcpy(c, " R ");
+                                switch(orientation) {
+                                    case NORTH:
+                                        strcpy(c, " ^ ");
+                                        break;
+                                    case SOUTH:
+                                        strcpy(c, " v ");
+                                        break;
+                                    case EAST:
+                                        strcpy(c, " > ");
+                                        break;
+                                    case WEST:
+                                        strcpy(c, " < ");
+                                        break;
+                                }
                             }
                             else
                             {
@@ -371,7 +389,20 @@ void displayMapRobot(t_map map, t_position robot) {
                         if (robot.x == j && robot.y == i) {
                             if (rep==1)
                             {
-                                strcpy(c, " R ");
+                                switch(orientation) {
+                                    case NORTH:
+                                        strcpy(c, " ^ ");
+                                        break;
+                                    case SOUTH:
+                                        strcpy(c, " v ");
+                                        break;
+                                    case EAST:
+                                        strcpy(c, " > ");
+                                        break;
+                                    case WEST:
+                                        strcpy(c, " < ");
+                                        break;
+                                }
                             }
                             else
                             {
@@ -385,7 +416,20 @@ void displayMapRobot(t_map map, t_position robot) {
                         if (robot.x == j && robot.y == i) {
                             if (rep==1)
                             {
-                                strcpy(c, " R ");
+                                switch(orientation) {
+                                    case NORTH:
+                                        strcpy(c, " ^ ");
+                                        break;
+                                    case SOUTH:
+                                        strcpy(c, " v ");
+                                        break;
+                                    case EAST:
+                                        strcpy(c, " > ");
+                                        break;
+                                    case WEST:
+                                        strcpy(c, " < ");
+                                        break;
+                                }
                             }
                             else
                             {
